@@ -28,7 +28,7 @@
 #include <sys/stat.h>
 #endif
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include "arrow/filesystem/localfs.h"
 #include "arrow/filesystem/util-internal.h"
@@ -39,7 +39,7 @@
 namespace arrow {
 namespace fs {
 
-namespace bfs = ::boost::filesystem;
+namespace bfs = std::filesystem;
 
 using ::arrow::internal::NativePathString;
 using ::arrow::internal::PlatformFilename;
@@ -196,7 +196,7 @@ Status StatSelector(const NativePathString& path, const Selector& select,
     BOOST_FILESYSTEM_TRY
     st = bfs::status(p);
     BOOST_FILESYSTEM_CATCH
-    if (st.type() == bfs::file_not_found) {
+    if (st.type() == bfs::file_type::not_found) {
       return Status::OK();
     }
   }

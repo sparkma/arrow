@@ -49,7 +49,7 @@
 #define ARROW_WRITE_SHMODE S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 #endif
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 // ----------------------------------------------------------------------
 // file compatibility stuff
@@ -178,7 +178,7 @@ Status StdinStream::Read(int64_t nbytes, std::shared_ptr<Buffer>* out) {
 
 namespace internal {
 
-namespace bfs = ::boost::filesystem;
+namespace bfs = std::filesystem;
 
 namespace {
 
@@ -343,7 +343,7 @@ Status DeleteDirTree(const PlatformFilename& dir_path, bool* deleted) {
   const auto& path = dir_path.impl_->path;
   // XXX There is a race here.
   auto st = bfs::symlink_status(path);
-  if (st.type() != bfs::file_not_found && st.type() != bfs::directory_file) {
+  if (st.type() != bfs::file_type::not_found && st.type() != bfs::file_type::directory) {
     return Status::IOError("Cannot delete non -directory '", path.string(), "'");
   }
   auto n_removed = bfs::remove_all(path);
